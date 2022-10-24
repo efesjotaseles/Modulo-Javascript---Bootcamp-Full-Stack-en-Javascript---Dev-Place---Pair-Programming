@@ -1,12 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
     <title>Pair Programming - Día 6</title>
-</head>
-<body>
-    
-</body>
+  </head>
+  <body>
+    <div class="container-calculadora">
+      <div class="calc-inputs">
+        <div class="num-input">
+          <label for="numA">A:</label>
+          <input type="number" id="numA" placeholder="ingrese un número..." />
+        </div>
+
+        <div class="select-operator">
+          <select name="operador" id="operador" class="simbolo-operador" onchange="operacion()">
+            <option value="+" class="simbolo-operador">+</option>
+            <option value="-" class="simbolo-operador">-</option>
+            <option value="x" class="simbolo-operador">x</option>
+            <option value="/" class="simbolo-operador">÷</option>
+          </select>
+        </div>
+
+        <div class="num-input">
+          <label for="numB">B:</label>
+          <input type="number" id="numB" placeholder="ingrese un número..." />
+        </div>
+      </div>
+
+      <div class="simbolo-operador">=</div>
+
+      <div class="num-output">
+        <label for="resultado">C:</label>
+        <input
+          type="number"
+          id="resultado"
+          placeholder="resultado..."
+          readonly
+        />
+      </div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
 </html>

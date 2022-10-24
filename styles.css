@@ -1,0 +1,39 @@
+body {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-size: large;
+}
+
+.container-calculadora {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.calc-inputs,
+.num-output {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.calc-inputs > div,
+.num-output > div {
+  margin: 5px;
+  padding: 5px;
+}
+
+.num-input > input,
+.num-output > input {
+  padding: 10px;
+}
+
+.select-operator > select {
+  padding: 5px;
+}
+
+.simbolo-operador {
+  font-size: large;
+  font-weight: bold;
+}
