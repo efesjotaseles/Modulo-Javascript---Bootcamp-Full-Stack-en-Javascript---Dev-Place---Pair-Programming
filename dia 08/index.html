@@ -4,10 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Static Template</title>
+    <link rel="stylesheet" href="styles.css" />
+    <title>Pair Programming - Día 8</title>
   </head>
-  <body>
-    <h1 id="currentLog"></h1>
+  <body class="flex-container">
+    <div class="input">
+      <form action="" class="input-boxes">
+        <input type="number" name="dni" id="input-dni" placeholder="dni" />
+        <input
+          type="text"
+          name="nombre"
+          id="input-nombre"
+          placeholder="nombre"
+        />
+        <input
+          type="text"
+          name="apellido"
+          id="input-apellido"
+          placeholder="apellido"
+        />
+        <input type="number" name="tel" id="input-tel" placeholder="teléfono" />
+      </form>
+      <div class="buttons">
+        <button id="agregarContacto">Agregar contacto</button>
+        <button id="eliminarContacto">Eliminar contacto</button>
+        <button id="mostrarAgenda">Mostrar cambios...</button>
+      </div>
+    </div>
+    <div class="output">
+      <table class="agenda" id="agenda">
+        <thead>
+          <tr>
+            <th>DNI</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Teléfono</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
     <script src="main.js"></script>
   </body>
 </html>

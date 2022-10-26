@@ -1,4 +1,11 @@
-const currentLog = document.getElementById("currentLog");
+const inputDNI = document.getElementById("input-dni");
+const inputNombre = document.getElementById("input-nombre");
+const inputApellido = document.getElementById("input-apellido");
+const inputTel = document.getElementById("input-tel");
+const buttonAgregar = document.getElementById("agregarContacto");
+const buttonEliminar = document.getElementById("eliminarContacto");
+const buttonMostrar = document.getElementById("mostrarAgenda");
+const tableAgenda = document.getElementById("agenda");
 
 let agenda = [];
 
@@ -18,6 +25,15 @@ class Contacto {
 
   toString() {
     return `DNI: ${this.dni} \nNombre: ${this.nombre} \nApellido: ${this.apellido} \nTeléfono: ${this.telefono}`;
+  }
+
+  toTableRow() {
+    return `<tr>
+    <td>${this.dni}</td>
+    <td>${this.nombre}</td>
+    <td>${this.apellido}</td>
+    <td>${this.telefono}</td>
+    </tr>`;
   }
 }
 
@@ -107,4 +123,25 @@ let menu = () => {
         break;
     }
   }
+};
+
+//Agrega!
+buttonAgregar.onclick = () => {
+  agregarContacto(
+    new Contacto(
+      inputDNI.value,
+      inputNombre.value,
+      inputApellido.value,
+      inputTel.value
+    )
+  );
+};
+
+//Función a terminar
+buttonMostrar.onclick = () => {
+  const node = document.createElement("tr");
+  const textNode = document.createTextNode(agenda[0].dni);
+  node.appendChild(textNode);
+  tableAgenda.appendChild(node);
+
 };
