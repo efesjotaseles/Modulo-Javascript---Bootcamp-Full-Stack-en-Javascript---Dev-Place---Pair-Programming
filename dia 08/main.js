@@ -2,23 +2,31 @@ const currentLog = document.getElementById("currentLog");
 
 let agenda = [];
 
-class Contacto{
+class Contacto {
   dni;
   nombre;
   apellido;
   telefono;
 
-  constructor(dni, nombre, apellido, telefono){
+  constructor(dni, nombre, apellido, telefono) {
     this.dni = dni;
     this.nombre = nombre;
     this.apellido = apellido;
     this.telefono = telefono;
+    return this;
+  }
+
+  toString() {
+    return `DNI: ${this.dni} \nNombre: ${this.nombre} \nApellido: ${this.apellido} \nTeléfono: ${this.telefono}`;
   }
 }
 
-let agregarContacto = (dni, nombre, apellido, telefono) => {
-  let contactoNuevo = [dni, nombre, apellido, telefono];
-  agenda.push(contactoNuevo);
+/**
+ * Inserta mediante push el contacto pasado a la agenda.
+ * @param {*} contacto
+ */
+let agregarContacto = (contacto) => {
+  agenda.push(contacto);
 };
 
 let eliminarPorDNI = (dni) => {
@@ -31,18 +39,26 @@ let eliminarPorDNI = (dni) => {
   return resultado;
 };
 
+/**
+ * UI para crear contacto nuevo y agregarlo a la agenda.
+ */
 let crearContacto = () => {
   let DNI = prompt("Ingrese DNI");
   let nombre = prompt("Ingrese nombre");
   let apellido = prompt("Ingrese apellido");
   let tel = prompt("Ingresar télefeno");
-  agregarContacto(DNI, nombre, apellido, tel);
+  agregarContacto(new Contacto(DNI, nombre, apellido, tel));
 };
 
+/**
+ *
+ * @param {*} DNI
+ * @returns posición del contacto en la agenda (null si no lo encuentra)
+ */
 let buscarContacto = (DNI) => {
   let int = null;
-  agenda.forEach((cont, i) => {
-    if (cont[0] === DNI) {
+  agenda.forEach((contacto, i) => {
+    if (contacto.dni == DNI) {
       int = i;
     }
   });
@@ -60,7 +76,7 @@ let mostrarAgenda = () => {
 };
 
 let mostrarContacto = (contacto) => {
-  return `DNI: ${contacto[0]}\nNombre: ${contacto[1]}\nApellido: ${contacto[2]}\nTel: ${contacto[3]}`;
+  return contacto.toString();
 };
 
 let menu = () => {
