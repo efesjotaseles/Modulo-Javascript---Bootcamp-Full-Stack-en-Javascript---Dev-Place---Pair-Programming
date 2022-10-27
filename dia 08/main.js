@@ -5,7 +5,7 @@ const inputTel = document.getElementById("input-tel");
 const buttonAgregar = document.getElementById("agregarContacto");
 const buttonEliminar = document.getElementById("eliminarContacto");
 const buttonMostrar = document.getElementById("mostrarAgenda");
-const tableAgenda = document.getElementById("agenda");
+const tableAgenda = document.getElementById("agendaContent");
 
 let agenda = [];
 
@@ -127,21 +127,65 @@ let menu = () => {
 
 //Agrega!
 buttonAgregar.onclick = () => {
-  agregarContacto(
-    new Contacto(
-      inputDNI.value,
-      inputNombre.value,
-      inputApellido.value,
-      inputTel.value
-    )
-  );
+  if (
+    inputDNI.value &&
+    inputNombre.value &&
+    inputApellido.value &&
+    inputTel.value
+  ) {
+    agregarContacto(
+      new Contacto(
+        inputDNI.value,
+        inputNombre.value,
+        inputApellido.value,
+        inputTel.value
+      )
+    );
+    inputDNI.value = "";
+    inputNombre.value = "";
+    inputApellido.value = "";
+    inputTel.value = "";
+    actualizarTablaHTML();
+  }
+ 
 };
 
-//Función a terminar
+buttonEliminar.onclick = () => {
+  eliminarPorDNI(inputDNI.value);
+};
+
+//Lista???
 buttonMostrar.onclick = () => {
-  const node = document.createElement("tr");
-  const textNode = document.createTextNode(agenda[0].dni);
-  node.appendChild(textNode);
-  tableAgenda.appendChild(node);
-
+  actualizarTablaHTML();
 };
+
+function actualizarTablaHTML() {
+  while (tableAgenda.firstChild) {
+    tableAgenda.removeChild(tableAgenda.lastChild);
+  }
+  agenda.map((contacto) => {
+    const rowNode = document.createElement("tr");
+
+    let cellNode = document.createElement("td");
+    let textNode = document.createTextNode(contacto.dni);
+    cellNode.appendChild(textNode);
+    rowNode.appendChild(cellNode);
+
+    cellNode = document.createElement("td");
+    textNode = document.createTextNode(contacto.nombre);
+    cellNode.appendChild(textNode);
+    rowNode.appendChild(cellNode);
+
+    cellNode = document.createElement("td");
+    textNode = document.createTextNode(contacto.apellido);
+    cellNode.appendChild(textNode);
+    rowNode.appendChild(cellNode);
+
+    cellNode = document.createElement("td");
+    textNode = document.createTextNode(contacto.telefono);
+    cellNode.appendChild(textNode);
+    rowNode.appendChild(cellNode);
+
+    tableAgenda.appendChild(rowNode);
+  });
+}
