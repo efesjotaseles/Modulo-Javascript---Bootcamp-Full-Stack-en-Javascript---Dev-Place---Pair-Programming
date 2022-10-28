@@ -5,48 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="styles.css" />
-    <title>Pair Programming - Día 8</title>
+    <title>Static Template</title>
   </head>
-  <body class="flex-container">
-    <div class="input">
-      <form action="" class="input-boxes">
-        <input type="number" name="dni" id="input-dni" placeholder="dni" />
-        <input
-          type="text"
-          name="nombre"
-          id="input-nombre"
-          placeholder="nombre"
-        />
-        <input
-          type="text"
-          name="apellido"
-          id="input-apellido"
-          placeholder="apellido"
-        />
-        <input type="number" name="tel" id="input-tel" placeholder="teléfono" />
-      </form>
-      <div class="buttons">
-        <button id="agregarContacto">Agregar contacto</button>
-        <button id="eliminarContacto">Eliminar contacto</button>
-        <button id="mostrarAgenda">Mostrar cambios...</button>
+  <body>
+    <body class="flex-container">
+      <div class="input">
+        <form action="" class="input-boxes">
+          <input type="number" name="dni" id="input-dni" placeholder="dni" />
+          <input
+            type="text"
+            name="nombre"
+            id="input-nombre"
+            placeholder="nombre"
+          />
+          <input
+            type="text"
+            name="apellido"
+            id="input-apellido"
+            placeholder="apellido"
+          />
+          <input
+            type="number"
+            name="tel"
+            id="input-tel"
+            placeholder="teléfono"
+          />
+        </form>
+        <div class="input-buttons">
+          <button id="agregarContacto">Agregar contacto</button>
+          <button id="eliminarContacto">Eliminar contacto</button>
+          <button id="mostrarAgenda">Mostrar cambios...</button>
+        </div>
       </div>
-    </div>
-    <div class="output">
-      <table class="agenda" id="agenda">
-        <thead>
-          <tr>
-            <th id="encabezadoDNI">DNI</th>
-            <th id="encabezadoNombre">Nombre</th>
-            <th id="encabezadoApellido">Apellido</th>
-            <th id="encabezadoTelefono">Teléfono</th>
-            <th class="encabezadoBotonEditar"></th>
-          </tr>
-        </thead>
-        <tbody class="agendaContent" id="agendaContent">
-        
-        </tbody>
-      </table>
-    </div>
-    <script src="main.js"></script>
+      <div class="output">
+        <table class="agenda" id="agenda">
+          <thead>
+            <tr>
+              <th id="encabezadoDNI">DNI</th>
+              <th id="encabezadoNombre">Nombre</th>
+              <th id="encabezadoApellido">Apellido</th>
+              <th id="encabezadoTelefono">Teléfono</th>
+              <th class="encabezadoBotonEditar"></th>
+            </tr>
+          </thead>
+          <tbody class="agendaContent" id="agendaContent" orden="null"></tbody>
+        </table>
+      </div>
+      <script src="main.js"></script>
+    </body>
   </body>
 </html>

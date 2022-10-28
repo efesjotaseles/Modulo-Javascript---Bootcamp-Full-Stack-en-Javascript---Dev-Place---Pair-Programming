@@ -11,6 +11,7 @@ const encabezadoNombre = document.getElementById("encabezadoNombre");
 const encabezadoApellido = document.getElementById("encabezadoApellido");
 const encabezadoTelefono = document.getElementById("encabezadoTelefono");
 
+//const filaEdit = document.getElementById(`row-${ind}`);
 let agenda = [];
 
 class Contacto {
@@ -39,13 +40,93 @@ class Contacto {
     return `DNI: ${this.dni} \nNombre: ${this.nombre} \nApellido: ${this.apellido} \nTeléfono: ${this.telefono}`;
   }
 
-  toTableRow() {
-    return `<tr>
-    <td>${this.dni}</td>
-    <td>${this.nombre}</td>
-    <td>${this.apellido}</td>
-    <td>${this.telefono}</td>
-    </tr>`;
+  // toTableRow() {
+  //   return `<tr>
+  //   <td>${this.dni}</td>
+  //   <td>${this.nombre}</td>
+  //   <td>${this.apellido}</td>
+  //   <td>${this.telefono}</td>
+  //   </tr>`;
+  // }
+}
+
+//Fila edicion
+function crearFilaEdicion(contacto, pos) {
+  const filaEdit = document.createElement("tr");
+  let cellEdit = document.createElement("td");
+  let inpEdit = document.createElement("input");
+  filaEdit.setAttribute("id", "filaEdit");
+  filaEdit.setAttribute("pos", `${pos}`);
+  //celda input dni
+  inpEdit.setAttribute("type", "number");
+  inpEdit.setAttribute("name", "edit-dni");
+  inpEdit.setAttribute("id", "edit-dni");
+  inpEdit.setAttribute("placeholder", "dni");
+  inpEdit.setAttribute("value", `${contacto.dni}`);
+  cellEdit.appendChild(inpEdit);
+  filaEdit.appendChild(cellEdit);
+
+  //celda input nombre
+  cellEdit = document.createElement("td");
+  inpEdit = document.createElement("input");
+  inpEdit.setAttribute("type", "text");
+  inpEdit.setAttribute("name", "edit-nombre");
+  inpEdit.setAttribute("id", "edit-nombre");
+  inpEdit.setAttribute("placeholder", "nombre");
+  inpEdit.setAttribute("value", `${contacto.nombre}`);
+  cellEdit.appendChild(inpEdit);
+  filaEdit.appendChild(cellEdit);
+
+  //celda input apellido
+  cellEdit = document.createElement("td");
+  inpEdit = document.createElement("input");
+  inpEdit.setAttribute("type", "text");
+  inpEdit.setAttribute("name", "edit-apellido");
+  inpEdit.setAttribute("id", "edit-apellido");
+  inpEdit.setAttribute("placeholder", "apellido");
+  inpEdit.setAttribute("value", `${contacto.apellido}`);
+  cellEdit.appendChild(inpEdit);
+  filaEdit.appendChild(cellEdit);
+
+  //celda input telefono
+  cellEdit = document.createElement("td");
+  inpEdit = document.createElement("input");
+  inpEdit.setAttribute("type", "number");
+  inpEdit.setAttribute("name", "edit-telefono");
+  inpEdit.setAttribute("id", "edit-telefono");
+  inpEdit.setAttribute("placeholder", "telefono");
+  inpEdit.setAttribute("value", `${contacto.telefono}`);
+  cellEdit.appendChild(inpEdit);
+  filaEdit.appendChild(cellEdit);
+
+  //celda boton guardar
+  cellEdit = document.createElement("td");
+  inpEdit = document.createElement("button");
+  inpEdit.innerHTML = "Guardar";
+  inpEdit.setAttribute("id", "botonGuadar");
+  inpEdit.setAttribute(
+    "onclick",
+    `editarContactoEnAgenda(new Contacto(document.getElementByID("edit-dni"),document.getElementByID("edit-nombre"),document.getElementByID("edit-apellido"),document.getElementByID("edit-telefono")),${pos})`
+  );
+  cellEdit.appendChild(inpEdit);
+  filaEdit.appendChild(cellEdit);
+
+  return filaEdit;
+}
+
+function editarContactoEnAgenda(contacto, pos) {
+  if (contacto.dni && contacto.nombre && contacto.nombre && contacto.telefono) {
+    //Si encuentra el dni ingresado en la agenda...
+    if (buscarContacto(inputDNI.value) !== null) {
+      alert("El dni ingresado ya existe en la agenda.");
+    }
+    //Si no lo encuentra, lo inserta en la agenda y actualiza la página.
+    else {
+      //Reasigna el elemento de la agenda con el nuevo
+      agenda[pos] = contacto;
+      //Y si simplemente actualizamos la tabla??? o_o
+      actualizarTablaHTML();
+    }
   }
 }
 
@@ -58,14 +139,14 @@ function ordenarAgendaPorTelefono() {
 }
 
 function ordenarAgendaPorNombre() {
-  agenda.sort((a,b)=>{
+  agenda.sort((a, b) => {
     const nameA = a.nombre.toUpperCase();
     const nameB = b.nombre.toUpperCase();
     let comparacion = 0; //Se asume que son iguales.
-    if(nameA < nameB){
+    if (nameA < nameB) {
       comparacion = -1; //Si a es menor
     }
-    if(nameA > nameB){
+    if (nameA > nameB) {
       comparacion = 1; //Si a es mayor
     }
     return comparacion;
@@ -73,14 +154,14 @@ function ordenarAgendaPorNombre() {
 }
 
 function ordenarAgendaPorApellido() {
-  agenda.sort((a,b)=>{
+  agenda.sort((a, b) => {
     const nameA = a.apellido.toUpperCase();
     const nameB = b.apellido.toUpperCase();
     let comparacion = 0; //Se asume que son iguales.
-    if(nameA < nameB){
+    if (nameA < nameB) {
       comparacion = -1; //Si a es menor
     }
-    if(nameA > nameB){
+    if (nameA > nameB) {
       comparacion = 1; //Si a es mayor
     }
     return comparacion;
@@ -205,6 +286,7 @@ buttonAgregar.onclick = () => {
 
 buttonEliminar.onclick = () => {
   eliminarPorDNI(inputDNI.value);
+  actualizarTablaHTML();
 };
 
 //Lista???
@@ -218,7 +300,7 @@ function actualizarTablaHTML() {
 
   agenda.map((contacto) => {
     const rowNode = document.createElement("tr");
-
+    rowNode.setAttribute("id", `row-${ind}`);
     let cellNode = document.createElement("td");
     let textNode = document.createTextNode(contacto.dni);
     cellNode.appendChild(textNode);
@@ -245,8 +327,9 @@ function actualizarTablaHTML() {
     let buttonNode = document.createElement("button");
     buttonNode.innerHTML = "editar";
     //mmm....
-    buttonNode.setAttribute("pos",`${ind}`);
-    buttonNode.setAttribute("onclick",`alert(${ind});`);
+    buttonNode.setAttribute("pos", `${ind}`); //DARLE ATRIBUTO A LA tr
+    buttonNode.setAttribute("onclick", `${ind}`);
+
     ind++;
     rowNode.appendChild(buttonNode);
 
@@ -255,26 +338,50 @@ function actualizarTablaHTML() {
 }
 
 //BOTONES PARA ORDENAR LISTA
-//TODO - Comprobar antes si ordenadaporBLAH = true. Si true, usar .reverse() / Si false, ordenarla.
-encabezadoDNI.onclick = () => {
-  ordenarAgendaPorDNI();
+function revertirOrdenAgendaHTML() {
+  agenda.reverse();
   actualizarTablaHTML();
 }
+
+encabezadoDNI.onclick = () => {
+  if (tableAgenda.getAttribute("orden") === "dni") {
+    revertirOrdenAgendaHTML();
+  } else {
+    ordenarAgendaPorDNI();
+    tableAgenda.setAttribute("orden", "dni");
+    actualizarTablaHTML();
+  }
+};
 
 encabezadoNombre.onclick = () => {
-  ordenarAgendaPorNombre();
-  actualizarTablaHTML();
-}
+  if (tableAgenda.getAttribute("orden") === "nombre") {
+    revertirOrdenAgendaHTML();
+  } else {
+    ordenarAgendaPorNombre();
+    tableAgenda.setAttribute("orden", "nombre");
+    actualizarTablaHTML();
+  }
+};
 
 encabezadoApellido.onclick = () => {
-  ordenarAgendaPorApellido();
-  actualizarTablaHTML();
-}
+  if (tableAgenda.getAttribute("orden") === "apellido") {
+    revertirOrdenAgendaHTML();
+  } else {
+    ordenarAgendaPorApellido();
+    tableAgenda.setAttribute("orden", "apellido");
+    actualizarTablaHTML();
+  }
+};
 
 encabezadoTelefono.onclick = () => {
-  ordenarAgendaPorTelefono();
-  actualizarTablaHTML();
-}
+  if (tableAgenda.getAttribute("orden") === "telefono") {
+    revertirOrdenAgendaHTML();
+  } else {
+    ordenarAgendaPorTelefono();
+    tableAgenda.setAttribute("orden", "telefono");
+    actualizarTablaHTML();
+  }
+};
 
 function limpiarTabla() {
   while (tableAgenda.firstChild) {
@@ -288,3 +395,11 @@ function limpiarInputs() {
   inputApellido.value = "";
   inputTel.value = "";
 }
+
+/*
+funcion que cree elemento con etiqueta "tr"
+y 4 celdas "td". Cada una con un elemento "input"
+
+
+
+*/
