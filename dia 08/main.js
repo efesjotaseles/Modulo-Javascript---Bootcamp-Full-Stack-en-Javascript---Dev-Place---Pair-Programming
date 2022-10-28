@@ -6,6 +6,10 @@ const buttonAgregar = document.getElementById("agregarContacto");
 const buttonEliminar = document.getElementById("eliminarContacto");
 const buttonMostrar = document.getElementById("mostrarAgenda");
 const tableAgenda = document.getElementById("agendaContent");
+const encabezadoDNI = document.getElementById("encabezadoDNI");
+const encabezadoNombre = document.getElementById("encabezadoNombre");
+const encabezadoApellido = document.getElementById("encabezadoApellido");
+const encabezadoTelefono = document.getElementById("encabezadoTelefono");
 
 let agenda = [];
 
@@ -16,11 +20,19 @@ class Contacto {
   telefono;
 
   constructor(dni, nombre, apellido, telefono) {
-    this.dni = dni;
-    this.nombre = nombre;
-    this.apellido = apellido;
-    this.telefono = telefono;
+    this.dni = parseInt(dni);
+    this.nombre = this.formatearString(nombre);
+    this.apellido = this.formatearString(apellido);
+    this.telefono = parseInt(telefono);
     return this;
+  }
+
+  formatearString(string) {
+    string = string.toString();
+    string = string.toLowerCase();
+    string = string.charAt(0).toUpperCase() + string.slice(1);
+
+    return string;
   }
 
   toString() {
@@ -35,6 +47,44 @@ class Contacto {
     <td>${this.telefono}</td>
     </tr>`;
   }
+}
+
+function ordenarAgendaPorDNI() {
+  agenda.sort((a, b) => a.dni - b.dni);
+}
+
+function ordenarAgendaPorTelefono() {
+  agenda.sort((a, b) => a.telefono - b.telefono);
+}
+
+function ordenarAgendaPorNombre() {
+  agenda.sort((a,b)=>{
+    const nameA = a.nombre.toUpperCase();
+    const nameB = b.nombre.toUpperCase();
+    let comparacion = 0; //Se asume que son iguales.
+    if(nameA < nameB){
+      comparacion = -1; //Si a es menor
+    }
+    if(nameA > nameB){
+      comparacion = 1; //Si a es mayor
+    }
+    return comparacion;
+  });
+}
+
+function ordenarAgendaPorApellido() {
+  agenda.sort((a,b)=>{
+    const nameA = a.apellido.toUpperCase();
+    const nameB = b.apellido.toUpperCase();
+    let comparacion = 0; //Se asume que son iguales.
+    if(nameA < nameB){
+      comparacion = -1; //Si a es menor
+    }
+    if(nameA > nameB){
+      comparacion = 1; //Si a es mayor
+    }
+    return comparacion;
+  });
 }
 
 /**
@@ -133,21 +183,24 @@ buttonAgregar.onclick = () => {
     inputApellido.value &&
     inputTel.value
   ) {
-    agregarContacto(
-      new Contacto(
-        inputDNI.value,
-        inputNombre.value,
-        inputApellido.value,
-        inputTel.value
-      )
-    );
-    inputDNI.value = "";
-    inputNombre.value = "";
-    inputApellido.value = "";
-    inputTel.value = "";
-    actualizarTablaHTML();
+    //Si encuentra el dni ingresado en la agenda...
+    if (buscarContacto(inputDNI.value) !== null) {
+      alert("El dni ingresado ya existe en la agenda.");
+    }
+    //Si no lo encuentra, lo inserta en la agenda y actualiza la página.
+    else {
+      agregarContacto(
+        new Contacto(
+          inputDNI.value,
+          inputNombre.value,
+          inputApellido.value,
+          inputTel.value
+        )
+      );
+      limpiarInputs();
+      actualizarTablaHTML();
+    }
   }
- 
 };
 
 buttonEliminar.onclick = () => {
@@ -160,9 +213,9 @@ buttonMostrar.onclick = () => {
 };
 
 function actualizarTablaHTML() {
-  while (tableAgenda.firstChild) {
-    tableAgenda.removeChild(tableAgenda.lastChild);
-  }
+  limpiarTabla();
+  let ind = 0;
+
   agenda.map((contacto) => {
     const rowNode = document.createElement("tr");
 
@@ -182,10 +235,54 @@ function actualizarTablaHTML() {
     rowNode.appendChild(cellNode);
 
     cellNode = document.createElement("td");
-    textNode = document.createTextNode(contacto.telefono);
-    cellNode.appendChild(textNode);
+    //textNode = document.createTextNode(contacto.telefono);
+    //cellNode.appendChild(textNode);
+    cellNode.innerHTML = contacto.telefono; //FORMA DE AGREGARLE EL TEXTO INTERNO SIN CREAR TEXTNODE
     rowNode.appendChild(cellNode);
+
+    //Botón editar
+    cellNode = document.createElement("td");
+    let buttonNode = document.createElement("button");
+    buttonNode.innerHTML = "editar";
+    //mmm....
+    buttonNode.setAttribute("pos",`${ind}`);
+    buttonNode.setAttribute("onclick",`alert(${ind});`);
+    ind++;
+    rowNode.appendChild(buttonNode);
 
     tableAgenda.appendChild(rowNode);
   });
+}
+
+encabezadoDNI.onclick = () => {
+  ordenarAgendaPorDNI();
+  actualizarTablaHTML();
+}
+
+encabezadoNombre.onclick = () => {
+  ordenarAgendaPorNombre();
+  actualizarTablaHTML();
+}
+
+encabezadoApellido.onclick = () => {
+  ordenarAgendaPorApellido();
+  actualizarTablaHTML();
+}
+
+encabezadoTelefono.onclick = () => {
+  ordenarAgendaPorTelefono();
+  actualizarTablaHTML();
+}
+
+function limpiarTabla() {
+  while (tableAgenda.firstChild) {
+    tableAgenda.removeChild(tableAgenda.lastChild);
+  }
+}
+
+function limpiarInputs() {
+  inputDNI.value = "";
+  inputNombre.value = "";
+  inputApellido.value = "";
+  inputTel.value = "";
 }
